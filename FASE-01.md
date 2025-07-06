@@ -134,9 +134,6 @@ sudo nano /etc/hosts
 192.168.100.10 spark-master
 192.168.100.11 spark-slave1
 192.168.100.12 spark-slave2
-192.168.100.13 spark-slave3
-192.168.100.14 spark-slave4
-192.168.100.15 spark-slave5
 
 # IPv6 entries
 ::1 ip6-localhost ip6-loopback
@@ -240,9 +237,6 @@ sudo shutdown -h now
    - **Tipo**: Clonación completa
 4. **Repetir proceso** para crear:
    - spark-slave2
-   - spark-slave3
-   - spark-slave4
-   - spark-slave5
 
 ### 5.3 Configurar Recursos de Slaves
 Para cada slave:
@@ -253,7 +247,7 @@ Para cada slave:
 ## **PASO 6: CONFIGURAR CADA SLAVE**
 
 ### 6.1 Configurar Hostnames y IPs
-**Para cada slave (spark-slave1 a spark-slave5):**
+**Para cada slave (spark-slave1 a spark-slave2):**
 
 ```bash
 # Iniciar VM y conectar
@@ -267,9 +261,6 @@ sudo nano /etc/netplan/00-installer-config.yaml
 **IPs para cada slave:**
 - spark-slave1: 192.168.100.11
 - spark-slave2: 192.168.100.12
-- spark-slave3: 192.168.100.13
-- spark-slave4: 192.168.100.14
-- spark-slave5: 192.168.100.15
 
 ```bash
 # Aplicar configuración
@@ -287,9 +278,6 @@ sudo reboot
 # Copiar clave pública a cada slave
 ssh-copy-id spark-user@spark-slave1
 ssh-copy-id spark-user@spark-slave2
-ssh-copy-id spark-user@spark-slave3
-ssh-copy-id spark-user@spark-slave4
-ssh-copy-id spark-user@spark-slave5
 
 # Copiar clave a sí mismo
 ssh-copy-id spark-user@spark-master
@@ -302,63 +290,15 @@ exit
 ### 7.2 Verificar Conectividad
 ```bash
 # En master, probar conexión a todos los nodos
-for i in {1..5}; do
+for i in {1..2}; do
     echo "Probando conexión a spark-slave$i"
     ssh spark-user@spark-slave$i "hostname && date"
 done
 ```
 
-## **PASO 8: CONFIGURAR DIRECTORIOS COMPARTIDOS**
+## **PASO 8: CAPTURAS DE PANTALLA REQUERIDAS**
 
-### 8.1 Crear Directorios en todos los nodos
-```bash
-# En master y cada slave
-mkdir -p ~/hadoop/logs
-mkdir -p ~/hadoop/data/namenode
-mkdir -p ~/hadoop/data/datanode
-mkdir -p ~/spark/logs
-mkdir -p ~/datasets
-```
-
-## **PASO 9: VERIFICACIÓN FINAL**
-
-### 9.1 Script de Verificación
-```bash
-# En master, crear script de verificación
-nano ~/verify_cluster.sh
-```
-
-**Contenido del script:**
-```bash
-#!/bin/bash
-echo "=== VERIFICACIÓN DEL CLUSTER ==="
-echo "Nodo Master: $(hostname)"
-echo "IP Master: $(hostname -I)"
-echo
-
-echo "=== VERIFICACIÓN DE CONECTIVIDAD ==="
-for i in {1..5}; do
-    echo -n "spark-slave$i: "
-    ssh spark-user@spark-slave$i "hostname" 2>/dev/null && echo "OK" || echo "FAIL"
-done
-
-echo
-echo "=== VERIFICACIÓN DE VERSIONES ==="
-echo "Java: $(java -version 2>&1 | head -1)"
-echo "Scala: $(scala -version 2>&1)"
-echo "Hadoop: $(hadoop version 2>&1 | head -1)"
-echo "Spark: $(spark-shell --version 2>&1 | grep version | head -1)"
-```
-
-```bash
-# Dar permisos y ejecutar
-chmod +x ~/verify_cluster.sh
-./verify_cluster.sh
-```
-
-## **PASO 10: CAPTURAS DE PANTALLA REQUERIDAS**
-
-### 10.1 Capturas Obligatorias
+### 8.1 Capturas Obligatorias
 1. **VirtualBox Manager** mostrando las 6 VMs
 2. **Configuración de red** de cada VM
 3. **Verificación de versiones** en master
