@@ -89,10 +89,10 @@
 # Usuario: spark-user, Password: spark123
 
 # Instalar herramientas necesarias
-sudo apt install -y net-tools vim curl wget htop
+sudo apt install -y net-tools curl wget htop
 
 # Configurar IP estática
-sudo vim /etc/netplan/00-installer-config.yaml
+sudo nano /etc/netplan/00-installer-config.yaml
 ```
 
 **Contenido del archivo netplan:**
@@ -122,7 +122,7 @@ ip addr show
 ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa -N ""
 
 # Configurar archivo hosts
-sudo vim /etc/hosts
+sudo nano /etc/hosts
 ```
 
 **Contenido de /etc/hosts:**
@@ -247,7 +247,7 @@ Para cada slave:
 sudo hostnamectl set-hostname spark-slave1  # Cambiar número según slave
 
 # Configurar IP en netplan
-sudo vim /etc/netplan/00-installer-config.yaml
+sudo nano /etc/netplan/00-installer-config.yaml
 ```
 
 **IPs para cada slave:**
@@ -311,7 +311,7 @@ mkdir -p ~/datasets
 ### 9.1 Script de Verificación
 ```bash
 # En master, crear script de verificación
-vim ~/verify_cluster.sh
+nano ~/verify_cluster.sh
 ```
 
 **Contenido del script:**

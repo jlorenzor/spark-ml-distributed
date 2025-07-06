@@ -89,7 +89,7 @@
 # Usuario: spark-user, Password: spark123
 
 # Instalar herramientas necesarias
-sudo apt install -y net-tools vim curl wget htop
+sudo apt install -y net-tools curl wget htop
 
 # Configurar IP estática
 sudo vim /etc/netplan/00-installer-config.yaml
@@ -170,7 +170,7 @@ sudo tar -xzf hadoop-3.2.1.tar.gz -C /opt/hadoop --strip-components=1
 sudo chown -R spark-user:spark-user /opt/hadoop
 ```
 
-### 4.4 Instalar Spark 3.0.1sudo n
+### 4.4 Instalar Spark 3.0.1
 ```bash
 # Crear directorio para Spark
 sudo mkdir -p /opt/spark
