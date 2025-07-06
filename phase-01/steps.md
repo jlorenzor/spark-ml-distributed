@@ -1,11 +1,11 @@
-# FASE 1: Configuración VirtualBox - 6 Nodos Spark+Hadoop
+# FASE 1: Configuración VirtualBox - 3 Nodos Spark+Hadoop
 
 ## **CONFIGURACIÓN RECOMENDADA DE HARDWARE**
 
-**Para tu máquina (24GB RAM, 16 hilos):**
+**Para tu máquina (16GB RAM, 8 CPUs):**
 - **Master**: 3GB RAM, 2 CPUs (más recursos para NameNode y Spark Master)
-- **Slaves (5 nodos)**: 2GB RAM, 1 CPU cada uno
-- **Total**: 13GB RAM, 7 CPUs → Deja 11GB para tu sistema host
+- **Slaves (2 nodos)**: 2GB RAM, 1 CPU cada uno
+- **Total**: 7GB RAM, 4 CPUs → Deja 9GB para tu sistema host
 
 ## **PASO 1: DESCARGA E INSTALACIÓN INICIAL**
 
@@ -24,23 +24,54 @@
 
 ## **PASO 2: CREAR LA MÁQUINA VIRTUAL BASE**
 ### 2.1: Crear Red NAT
-1. **Abrir VirtualBox**
-2. Ir a **"Archivo"** → **"Administrador de red"**
-3. **Pestaña Redes NAT**
+
+1. Abrir **VirtualBox**.
+2. Ir a `Archivo` → `Administrador de red`.
+3. Ir a la pestaña **Redes NAT**.
 4. Crear nueva red NAT:
-   - **Nombre**: `spark-network`
-   - **CIDR**: `10.0.2.0/24`
-   - **Habilitar DHCP**: NO
-   - **Habilitar IPv6**: NO
+   - **Nombre:** `spark-network`
+   - **CIDR:** `10.0.2.0/24`
+   - **Habilitar DHCP:** NO
+   - **Habilitar IPv6:** NO
+
+✅ Esta red permitirá que la VM tenga salida a Internet y sea accesible mediante reenvío de puertos.
+
+### 2.1.1: Configurar reenvío de puertos en la red NAT
+
+1. Seleccionar la red `spark-network` creada.
+2. Click en `Editar` → `Reenvío de puertos`.
+3. Agregar las siguientes reglas:
+
+| Nombre  | Protocolo | IP anfitrión | Puerto anfitrión | IP invitado       | Puerto invitado |
+|---------|-----------|--------------|------------------|--------------------|-----------------|
+| HTTP    | TCP       | 127.0.0.1    | 8080             | 192.168.100.10 (*) | 8080            |
+| SparkUI | TCP       | 127.0.0.1    | 7077             | 192.168.100.10 (*) | 7077            |
+
+> **Notas:**
+> - `IP invitado` debe ser la IP asignada en la VM en la red NAT. Puedes ajustar según la IP estática configurada (p. ej., `10.0.2.15` si así la defines).
+> - Si la VM usa DHCP y cambia IP, puedes usar `0.0.0.0` en `IP invitado` para que redirija al huésped independientemente de su IP.
+
+✅ Esto permitirá acceder desde tu host Windows a los servicios expuestos en la VM con:
+- `http://localhost:8080` → Spark
+- `http://localhost:7077` → Spark Master
+
+![Ejemplo de Red NAT configurada](/phase-01/adaptador-red-nat.PNG)
+
+![Ejemplo de Red NAT configurada](/phase-01/adaptador-red-nat-reenvio-puertos.PNG)
 
 ### 2.2: Configurar Red Interna
-1. Ir a **"Archivo"** → **"Administrador de red"**
-2. **Pestaña Redes solo anfitrión**
-3. Crear nueva red:
+1. Abrir **VirtualBox**.
+2. Ir a `Archivo` → `Administrador de red`.
+3. Ir a la pestaña **Redes solo anfitrión**.
+4. Crear nueva red:
    - **IPv4**: `192.168.56.1` (o cualquier IP libre en la red)
    - **Máscara**: `255.255.255.0`
    - **Sin DHCP**
    - **Habilitar IPv6**: NO
+
+✅ Esta red se usará para comunicación directa entre el host y la VM, sin depender de Internet.
+
+![Ejemplo de Red Interna configurada](/phase-01/adaptador-red-interna.PNG)
 
 ### 2.3 Crear VM Master (spark-master)
 1. **Abrir VirtualBox** → Clic en "Nueva"
@@ -270,6 +301,10 @@ sudo netplan apply
 sudo reboot
 ```
 
+### Screenshot de Configuración hasta aquí
+![Maquinas virtuales configuradas](/phase-01/vm-master-slaves.PNG)
+![Iniciando sesion en VMs](/phase-01/vm-master-slaves-logged.PNG)
+
 ## **PASO 7: CONFIGURAR SSH SIN CONTRASEÑA**
 
 ### 7.1 Desde Master hacia todos los Slaves
@@ -299,7 +334,7 @@ done
 ## **PASO 8: CAPTURAS DE PANTALLA REQUERIDAS**
 
 ### 8.1 Capturas Obligatorias
-1. **VirtualBox Manager** mostrando las 6 VMs
+1. **VirtualBox Manager** mostrando las 3 VMs
 2. **Configuración de red** de cada VM
 3. **Verificación de versiones** en master
 4. **Conectividad SSH** entre nodos
@@ -310,7 +345,7 @@ done
 
 ## **CHECKLIST FASE 1 COMPLETADA**
 
-- [ ] 6 VMs creadas (1 master + 5 slaves)
+- [ ] 3 VMs creadas (1 master + 2 slaves)
 - [ ] Ubuntu Server 20.04 instalado en todas
 - [ ] Red interna configurada (192.168.100.x)
 - [ ] SSH sin contraseña configurado
@@ -322,5 +357,3 @@ done
 - [ ] Conectividad verificada entre todos los nodos
 - [ ] Capturas de pantalla tomadas
 - [ ] Script de verificación funcionando
-
-**Próximo paso:** FASE 2 - Configuración de Hadoop HDFS y Spark Cluster
