@@ -128,9 +128,23 @@ sudo nano /etc/hosts
 **Contenido de /etc/hosts:**
 ```
 127.0.0.1 localhost
+127.0.1.1 spark-server
+
+# Cluster Spark-Hadoop
 192.168.100.10 spark-master
 192.168.100.11 spark-slave1
 192.168.100.12 spark-slave2
+192.168.100.13 spark-slave3
+192.168.100.14 spark-slave4
+192.168.100.15 spark-slave5
+
+# IPv6 entries
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
 ```
 
 ## **PASO 4: INSTALACIÓN DE DEPENDENCIAS**
