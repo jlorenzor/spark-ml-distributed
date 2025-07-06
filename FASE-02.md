@@ -9,7 +9,7 @@
 cd $HADOOP_HOME/etc/hadoop
 
 # Configurar JAVA_HOME en hadoop-env.sh
-sudo vim hadoop-env.sh
+sudo nano hadoop-env.sh
 ```
 
 **En hadoop-env.sh, agregar/modificar:**
@@ -21,7 +21,7 @@ export HADOOP_LOG_DIR=$HADOOP_HOME/logs
 
 ### 1.2 Configurar core-site.xml
 ```bash
-sudo vim core-site.xml
+sudo nano core-site.xml
 ```
 
 **Contenido de core-site.xml:**
@@ -46,7 +46,7 @@ sudo vim core-site.xml
 
 ### 1.3 Configurar hdfs-site.xml
 ```bash
-sudo vim hdfs-site.xml
+sudo nano hdfs-site.xml
 ```
 
 **Contenido de hdfs-site.xml:**
@@ -83,7 +83,7 @@ sudo vim hdfs-site.xml
 
 ### 1.4 Configurar yarn-site.xml
 ```bash
-sudo vim yarn-site.xml
+sudo nano yarn-site.xml
 ```
 
 **Contenido de yarn-site.xml:**
@@ -111,7 +111,7 @@ sudo vim yarn-site.xml
 
 ### 1.5 Configurar mapred-site.xml
 ```bash
-sudo vim mapred-site.xml
+sudo nano mapred-site.xml
 ```
 
 **Contenido de mapred-site.xml:**
@@ -132,7 +132,7 @@ sudo vim mapred-site.xml
 
 ### 1.6 Configurar workers (antes slaves)
 ```bash
-sudo vim workers
+sudo nano workers
 ```
 
 **Contenido de workers:**
@@ -162,7 +162,7 @@ chmod 755 ~/hadoop/data/datanode
 ### 2.1 Script para copiar configuración
 ```bash
 # En master, crear script de distribución
-vim ~/distribute_config.sh
+nano ~/distribute_config.sh
 ```
 
 **Contenido del script:**
@@ -211,7 +211,7 @@ cp workers.template workers
 
 ### 3.2 Configurar spark-env.sh
 ```bash
-vim spark-env.sh
+nano spark-env.sh
 ```
 
 **Agregar al final de spark-env.sh:**
@@ -232,7 +232,7 @@ export SPARK_PID_DIR=$SPARK_HOME/pids
 
 ### 3.3 Configurar spark-defaults.conf
 ```bash
-vim spark-defaults.conf
+nano spark-defaults.conf
 ```
 
 **Contenido de spark-defaults.conf:**
@@ -249,7 +249,7 @@ spark.sql.adaptive.advisoryPartitionSizeInBytes 64MB
 
 ### 3.4 Configurar workers de Spark
 ```bash
-vim workers
+nano workers
 ```
 
 **Contenido de workers:**
@@ -271,7 +271,7 @@ mkdir -p $SPARK_HOME/pids
 
 ### 4.1 Script para distribuir Spark
 ```bash
-vim ~/distribute_spark_config.sh
+nano ~/distribute_spark_config.sh
 ```
 
 **Contenido del script:**
@@ -362,7 +362,7 @@ echo "YARN ResourceManager: http://192.168.100.10:8088"
 
 ### 6.3 Script de verificación completa
 ```bash
-vim ~/verify_full_cluster.sh
+nano ~/verify_full_cluster.sh
 ```
 
 **Contenido del script:**
@@ -445,7 +445,7 @@ for i in {1..5}; do echo "=== spark-slave$i ==="; ssh spark-user@spark-slave$i j
 
 ### 8.1 Script para iniciar cluster
 ```bash
-vim ~/start_cluster.sh
+nano ~/start_cluster.sh
 ```
 
 **Contenido:**
@@ -462,7 +462,7 @@ jps
 
 ### 8.2 Script para detener cluster
 ```bash
-vim ~/stop_cluster.sh
+nano ~/stop_cluster.sh
 ```
 
 **Contenido:**
