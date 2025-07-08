@@ -31,6 +31,8 @@ wget -q $REPO_URL/configs/system/hosts -O configs/hosts
 echo "Descargando scripts..."
 wget -q $REPO_URL/scripts/setup-$NODE_TYPE.sh -O scripts/setup.sh
 wget -q $REPO_URL/scripts/start-cluster.sh -O scripts/start-cluster.sh
+wget -q $REPO_URL/scripts/start-cluster.sh -O scripts/setup-master.sh
+wget -q $REPO_URL/scripts/setup-slave.sh -O scripts/setup-slave.sh
 wget -q $REPO_URL/scripts/stop-cluster.sh -O scripts/stop-cluster.sh
 wget -q $REPO_URL/scripts/format-hdfs.sh -O scripts/format-hdfs.sh
 wget -q $REPO_URL/scripts/verify-cluster.sh -O scripts/verify-cluster.sh
